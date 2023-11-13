@@ -6,19 +6,44 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(400))
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black
+        ),
+        title: Text(
+          'Home View',
+          style: TextStyle(
+            color: Colors.blue
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search_rounded),
+            splashRadius: 20,
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.wechat_rounded),
+            splashRadius: 20,
+          )
+        ],
       ),
-      appBar: AppBar(
-        title: Text(
-          'Home View'
-        ),
+      body: Column(
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+              ),
+              Expanded(
+                child: TextField()
+              )
+            ],
+          )
+        ],
       ),
     );
   }
