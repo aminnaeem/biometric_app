@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "912977426729",
+    "project_id": "biometric-app-bad2a",
+    "storage_bucket": "biometric-app-bad2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912977426729:android:cee5910796c381762e5f38",
+        "android_client_info": {
+          "package_name": "com.example.biometric_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcXZKyftUEHs22Sn1cCJf4gmRT8ONC0qY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

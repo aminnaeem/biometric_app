@@ -101,8 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
           biometricOnly: true
         ),
       );
-      SnackBar(content: Text("Authenticated: $authenticated"));
-      Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context) => HomeView()));
+      if (authenticated) {
+        Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context) => HomeView()));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Center(child: Text("Login Successful"))));
+      }
+      else {
+        
+      }
     } on PlatformException catch (e) {
       print(e);
     }
