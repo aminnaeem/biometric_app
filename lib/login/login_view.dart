@@ -28,14 +28,14 @@ class LoginView extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(10)
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.fingerprint_rounded,
                       color: Colors.blue,
                       size: 60,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
                     child: Text(
                       'Login with Fingerprint',
                       style: TextStyle(

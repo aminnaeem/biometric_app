@@ -1,5 +1,6 @@
 import 'package:biometric_app/home/home_view.dart';
 import 'package:biometric_app/widgets/custom_textfields.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -13,9 +14,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController usernameController = TextEditingController();
+  final emailController = TextEditingController();
 
-  TextEditingController passwordController = TextEditingController();
+  final passwordController = TextEditingController();
 
   late final LocalAuthentication auth;
 
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: MediaQuery.of(context).size.width*0.9,
                   child: Column(
                     children: [
-                      CustomTextFields(textController: usernameController, lblText: 'Username', hntText: 'Enter your Username', sfxIcon: Icons.person, obsText: false,),
+                      CustomTextFields(textController: emailController, lblText: 'Email', hntText: 'Enter your Email', sfxIcon: Icons.email_rounded, obsText: false,),
                       CustomTextFields(textController: passwordController, lblText: 'Password', hntText: 'Enter your Password', sfxIcon: Icons.password, obsText: true,),
                     ],
                   ),
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 100,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: _authenticate,
+                    onPressed: _authenticate ,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.transparent),
                       shadowColor: MaterialStateProperty.all(Colors.transparent),
@@ -94,22 +95,41 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future _authenticate() async {
     try {
-      bool authenticated = await auth.authenticate(
-        localizedReason: 'Login via Biometric',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: true
-        ),
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
       );
-      if (authenticated) {
-        Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context) => HomeView()));
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Center(child: Text("Login Successful"))));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
       }
-      else {
-        
+    }
+    if (emailController.text.isNotEmpty != null && passwordController.text.isNotEmpty) {
+      try {
+        bool authenticated = await auth.authenticate(
+          localizedReason: 'Login via Biometric',
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            biometricOnly: true
+          ),
+        );
+        if (authenticated) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Center(child: Text("Login Successful"))));
+          Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context) => HomeView()));
+        }
+        else {
+          await FirebaseAuth.instance.signOut();
+        }
+      } on PlatformException catch (e) {
+        print(e);
       }
-    } on PlatformException catch (e) {
-      print(e);
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Center(child: Text('Email or Password is missing')))
+      );
     }
   }
 

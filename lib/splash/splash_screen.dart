@@ -1,4 +1,3 @@
-import 'package:biometric_app/home/home_view.dart';
 import 'package:biometric_app/login/login_view.dart';
 import 'package:flutter/material.dart';
 
